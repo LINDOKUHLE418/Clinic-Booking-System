@@ -40,7 +40,7 @@ body {
   text-align: center;
 }
 
-.header h1 {
+.header h1, .header h2 {
   background-image: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
   background-clip: text;
   color: transparent;
@@ -62,6 +62,7 @@ body {
 .choice-container h3 {
   color: var(--dark-blue);
   margin-bottom: 16px;
+  font-size: 1.1rem;
 }
 
 .choice-buttons {
@@ -70,38 +71,10 @@ body {
   gap: 12px;
 }
 
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--border-color);
-}
-
-.tab-btn {
-  background: none;
-  border: none;
-  padding: 10px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  color: #6b7280;
-  cursor: pointer;
-}
-
-.tab-btn.active {
-  color: var(--accent-purple);
-  border-bottom: 3px solid var(--accent-purple);
-}
-
 .form-section {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.form-section h2 {
-  color: var(--dark-purple);
-  font-size: 1.3rem;
-  margin-bottom: 8px;
 }
 
 .form-group {
@@ -138,31 +111,76 @@ input:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
 }
 
-.btn-primary {
+.btn-primary, .btn-secondary {
   padding: 12px;
-  background: linear-gradient(to right, var(--primary-blue), var(--accent-purple));
-  color: white;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: bold;
+  color: white;
   cursor: pointer;
   transition: opacity 0.2s;
+  width: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, var(--primary-blue), var(--accent-purple));
 }
 
 .btn-secondary {
-  padding: 12px;
   background: linear-gradient(to right, var(--accent-purple), var(--dark-purple));
-  color: white;
+}
+
+.btn-link {
+  background: none;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: bold;
+  color: var(--primary-blue);
+  text-decoration: underline;
   cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 8px;
 }
 
 .btn-primary:hover, .btn-secondary:hover {
   opacity: 0.9;
+}
+
+.confirmation-box {
+  text-align: center;
+}
+
+.checkmark-icon {
+  font-size: 3rem;
+  color: #16a34a;
+  margin-bottom: 12px;
+}
+
+.confirmation-box h2 {
+  color: var(--dark-blue);
+  margin-bottom: 8px;
+}
+
+.confirmation-subtitle {
+  color: #4b5563;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.details-card {
+  background-color: #f9fafb;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.details-card p {
+  font-size: 0.95rem;
+  color: #374151;
 }
 
 .hidden {

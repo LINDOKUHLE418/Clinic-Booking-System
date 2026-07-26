@@ -15,65 +15,46 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// DOM Elements
-const welcomeChoice = document.getElementById("welcomeChoice");
-const authTabs = document.getElementById("authTabs");
-const loginForm = document.getElementById("loginForm");
+// Pages
+const welcomePage = document.getElementById("welcomePage");
+const registerPage = document.getElementById("registerPage");
+const loginPage = document.getElementById("loginPage");
+const bookingPage = document.getElementById("bookingPage");
+const confirmationPage = document.getElementById("confirmationPage");
+
+// Forms & Elements
 const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
 const bookingForm = document.getElementById("bookingForm");
 const statusMessage = document.getElementById("statusMessage");
 
-const btnNewPatient = document.getElementById("btnNewPatient");
-const btnReturningPatient = document.getElementById("btnReturningPatient");
+// Navigation Buttons
+const btnGoToLogin = document.getElementById("btnGoToLogin");
+const btnGoToRegister = document.getElementById("btnGoToRegister");
+const btnBackFromReg = document.getElementById("btnBackFromReg");
+const btnBackFromLogin = document.getElementById("btnBackFromLogin");
+const btnNewBooking = document.getElementById("btnNewBooking");
 
-const tabLogin = document.getElementById("tabLogin");
-const tabRegister = document.getElementById("tabRegister");
-const tabBook = document.getElementById("tabBook");
+// Summary Elements
+const summaryEmail = document.getElementById("summaryEmail");
+const summaryDepartment = document.getElementById("summaryDepartment");
+const summaryDate = document.getElementById("summaryDate");
+const summaryTime = document.getElementById("summaryTime");
 
-// View switching helper
-function showSection(sectionToShow) {
-  [loginForm, registerForm, bookingForm].forEach(form => form.classList.add("hidden"));
-  sectionToShow.classList.remove("hidden");
+// Helper function to switch active page view
+function goToPage(pageToShow) {
+  [welcomePage, registerPage, loginPage, bookingPage, confirmationPage].forEach(page => page.classList.add("hidden"));
+  pageToShow.classList.remove("hidden");
   statusMessage.textContent = "";
 }
 
-function updateTabState(activeTab) {
-  [tabLogin, tabRegister, tabBook].forEach(tab => tab.classList.remove("active"));
-  activeTab.classList.add("active");
-}
+// Event Listeners for Navigation
+btnGoToLogin.addEventListener("click", () => goToPage(loginPage));
+btnGoToRegister.addEventListener("click", () => goToPage(registerPage));
+btnBackFromReg.addEventListener("click", () => goToPage(welcomePage));
+btnBackFromLogin.addEventListener("click", () => goToPage(welcomePage));
 
-// Event Listeners for Choice Screen
-btnNewPatient.addEventListener("click", () => {
-  welcomeChoice.classList.add("hidden");
-  authTabs.classList.remove("hidden");
-  showSection(registerForm);
-  updateTabState(tabRegister);
-});
-
-btnReturningPatient.addEventListener("click", () => {
-  welcomeChoice.classList.add("hidden");
-  authTabs.classList.remove("hidden");
-  showSection(loginForm);
-  updateTabState(tabLogin);
-});
-
-// Tab Switchers
-tabLogin.addEventListener("click", () => {
-  showSection(loginForm);
-  updateTabState(tabLogin);
-});
-
-tabRegister.addEventListener("click", () => {
-  showSection(registerForm);
-  updateTabState(tabRegister);
-});
-
-tabBook.addEventListener("click", () => {
-  showSection(bookingForm);
-  updateTabState(tabBook);
-});
-
-// Registration Handling
+// Handle Registration -> Redirect back to Welcome Page
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = document.getElementById("regEmail").value;
@@ -84,21 +65,20 @@ registerForm.addEventListener("submit", async (e) => {
     statusMessage.className = "status-message";
     await createUserWithEmailAndPassword(auth, email, password);
     
-    statusMessage.textContent = "Account registered successfully! Proceeding to booking...";
+    statusMessage.textContent = "Account created! Redirecting to Welcome Page to log in...";
     statusMessage.className = "status-message success";
     registerForm.reset();
 
     setTimeout(() => {
-      showSection(bookingForm);
-      updateTabState(tabBook);
-    }, 1500);
+      goToPage(welcomePage);
+    }, 1800);
   } catch (error) {
     statusMessage.textContent = error.message;
     statusMessage.className = "status-message error";
   }
 });
 
-// Login Handling
+// Handle Login -> Redirect to Booking Page
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = document.getElementById("loginEmail").value;
@@ -109,31 +89,35 @@ loginForm.addEventListener("submit", async (e) => {
     statusMessage.className = "status-message";
     await signInWithEmailAndPassword(auth, email, password);
     
-    statusMessage.textContent = "Logged in successfully!";
+    statusMessage.textContent = "Logged in! Loading booking page...";
     statusMessage.className = "status-message success";
     loginForm.reset();
 
     setTimeout(() => {
-      showSection(bookingForm);
-      updateTabState(tabBook);
-    }, 1500);
+      goToPage(bookingPage);
+    }, 1200);
   } catch (error) {
-    statusMessage.textContent = "Invalid login credentials.";
+    statusMessage.textContent = "Invalid email or password.";
     statusMessage.className = "status-message error";
   }
 });
 
-// Booking Submission
+// Handle Booking Submission -> Redirect to Confirmation Page
 bookingForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
 
+  const department = document.getElementById("doctorType").value;
+  const date = document.getElementById("bookingDate").value;
+  const time = document.getElementById("bookingTime").value;
+  const email = user ? user.email : "Guest";
+
   const appointmentData = {
     clinic: "Ubuntu Health Clinic",
-    patientEmail: user ? user.email : "Guest",
-    department: document.getElementById("doctorType").value,
-    date: document.getElementById("bookingDate").value,
-    time: document.getElementById("bookingTime").value,
+    patientEmail: email,
+    department: department,
+    date: date,
+    time: time,
     createdAt: new Date()
   };
 
@@ -143,11 +127,20 @@ bookingForm.addEventListener("submit", async (e) => {
 
     await addDoc(collection(db, "appointments"), appointmentData);
 
-    statusMessage.textContent = "Appointment booked successfully!";
-    statusMessage.className = "status-message success";
+    summaryEmail.textContent = email;
+    summaryDepartment.textContent = department;
+    summaryDate.textContent = date;
+    summaryTime.textContent = time;
+
     bookingForm.reset();
+    goToPage(confirmationPage);
   } catch (error) {
     statusMessage.textContent = "Failed to book appointment. Please try again.";
     statusMessage.className = "status-message error";
   }
+});
+
+// Start a new booking flow from Confirmation Page
+btnNewBooking.addEventListener("click", () => {
+  goToPage(welcomePage);
 });

@@ -3,35 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clinic Appointment Booking</title>
+  <title>Ubuntu Health Clinic</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <main class="container">
     <header class="header">
-      <h1>Care Clinic</h1>
-      <p>Schedule your appointment in a few simple steps.</p>
+      <h1>Welcome to Ubuntu Health Clinic</h1>
+      <p>Book your appointments quickly and conveniently online. Our easy-to-use system helps you schedule your visit with trusted healthcare professionals, making quality care just a few clicks away.</p>
     </header>
 
-    <form id="bookingForm" class="booking-form">
-      <div class="form-group">
-        <label for="patientName">Full Name</label>
-        <input type="text" id="patientName" placeholder="Enter your full name" required>
+    <!-- Initial Patient Choice View -->
+    <div id="welcomeChoice" class="choice-container">
+      <h3>Are you a new or returning patient?</h3>
+      <div class="choice-buttons">
+        <button type="button" id="btnNewPatient" class="btn-primary">New Patient (Register)</button>
+        <button type="button" id="btnReturningPatient" class="btn-secondary">Returning Patient (Log In)</button>
       </div>
+    </div>
 
+    <!-- Navigation Tabs (Hidden initially) -->
+    <div id="authTabs" class="tabs hidden">
+      <button id="tabLogin" class="tab-btn">Log In</button>
+      <button id="tabRegister" class="tab-btn">Register</button>
+      <button id="tabBook" class="tab-btn">Book Visit</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" class="form-section hidden">
+      <h2>Patient Login</h2>
       <div class="form-group">
-        <label for="patientEmail">Email Address</label>
-        <input type="email" id="patientEmail" placeholder="name@example.com" required>
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="name@example.com" required>
       </div>
-
       <div class="form-group">
-        <label for="patientPhone">Phone Number</label>
-        <input type="tel" id="patientPhone" placeholder="Enter phone number" required>
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password" required>
       </div>
+      <button type="submit" class="btn-primary">Log In</button>
+    </form>
 
+    <!-- Register Form -->
+    <form id="registerForm" class="form-section hidden">
+      <h2>Register Account</h2>
       <div class="form-group">
-        <label for="doctorType">Department</label>
+        <label for="regName">Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your full name" required>
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email Address</label>
+        <input type="email" id="regEmail" placeholder="name@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="regPhone">Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="Enter phone number" required>
+      </div>
+      <div class="form-group">
+        <label for="regPassword">Create Password</label>
+        <input type="password" id="regPassword" placeholder="Create a password" required>
+      </div>
+      <button type="submit" class="btn-primary">Register Account</button>
+    </form>
+
+    <!-- Appointment Booking Form -->
+    <form id="bookingForm" class="form-section hidden">
+      <h2>Schedule Appointment</h2>
+      <div class="form-group">
+        <label for="doctorType">Department / Service</label>
         <select id="doctorType" required>
           <option value="" disabled selected>Select a department</option>
           <option value="General Practitioner">General Practitioner</option>
@@ -53,7 +92,7 @@
         </div>
       </div>
 
-      <button type="submit" id="submitBtn">Book Appointment</button>
+      <button type="submit" class="btn-primary">Confirm Booking</button>
     </form>
 
     <div id="statusMessage" class="status-message"></div>

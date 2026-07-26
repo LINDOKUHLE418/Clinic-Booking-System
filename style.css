@@ -1,21 +1,23 @@
 :root {
-  --primary-color: #0d47a1;
-  --accent-color: #ec407a;
-  --bg-color: #f4f6f9;
+  --primary-blue: #2563eb;
+  --dark-blue: #1e40af;
+  --accent-purple: #7c3aed;
+  --dark-purple: #5b21b6;
+  --bg-gradient: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
   --card-bg: #ffffff;
-  --text-color: #333333;
-  --border-color: #cccccc;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background-color: var(--bg-color);
+  background: var(--bg-gradient);
   color: var(--text-color);
   display: flex;
   justify-content: center;
@@ -26,11 +28,11 @@ body {
 
 .container {
   background: var(--card-bg);
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 500px;
+  max-width: 550px;
 }
 
 .header {
@@ -39,14 +41,67 @@ body {
 }
 
 .header h1 {
-  color: var(--primary-color);
-  margin-bottom: 8px;
+  background-image: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  font-size: 1.8rem;
 }
 
-.booking-form {
+.header p {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.choice-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.choice-container h3 {
+  color: var(--dark-blue);
+  margin-bottom: 16px;
+}
+
+.choice-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  color: var(--accent-purple);
+  border-bottom: 3px solid var(--accent-purple);
+}
+
+.form-section {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.form-section h2 {
+  color: var(--dark-purple);
+  font-size: 1.3rem;
+  margin-bottom: 8px;
 }
 
 .form-group {
@@ -65,36 +120,53 @@ body {
 }
 
 label {
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
 }
 
 input, select {
-  padding: 10px;
+  padding: 12px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
 input:focus, select:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
 }
 
-button {
-  margin-top: 10px;
+.btn-primary {
   padding: 12px;
-  background-color: var(--accent-color);
+  background: linear-gradient(to right, var(--primary-blue), var(--accent-purple));
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-secondary {
+  padding: 12px;
+  background: linear-gradient(to right, var(--accent-purple), var(--dark-purple));
+  color: white;
+  border: none;
+  border-radius: 6px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
 }
 
-button:hover {
+.btn-primary:hover, .btn-secondary:hover {
   opacity: 0.9;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .status-message {
@@ -104,9 +176,9 @@ button:hover {
 }
 
 .status-message.success {
-  color: #2e7d32;
+  color: #16a34a;
 }
 
 .status-message.error {
-  color: #c62828;
+  color: #dc2626;
 }

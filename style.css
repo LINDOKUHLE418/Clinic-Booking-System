@@ -5,7 +5,6 @@
   --soft-purple-bg: #f5f3ff;
   --text-main: #1f2937;
   --text-muted: #6b7280;
-  --bg-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
   --border-color: #e5e7eb;
 }
 
@@ -17,24 +16,20 @@
 }
 
 body {
-  background: var(--bg-gradient);
+  background-color: #ffffff;
+  color: var(--text-main);
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  flex-direction: column;
 }
 
-/* MAIN CARD CONTAINER */
+/* FULL PAGE WRAPPER */
 .app-card {
-  background: #ffffff;
   width: 100%;
-  max-width: 980px;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  padding: 30px 40px;
-  position: relative;
-  overflow: hidden;
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 30px 80px;
+  box-sizing: border-box;
 }
 
 /* NAVBAR STYLE */
@@ -42,11 +37,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 35px;
+  margin-bottom: 50px;
+  width: 100%;
 }
 
 .brand-logo {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-main);
 }
@@ -58,13 +54,13 @@ body {
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 24px;
+  gap: 36px;
 }
 
 .nav-links a {
   text-decoration: none;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   transition: color 0.2s;
 }
@@ -77,48 +73,54 @@ body {
   background-color: var(--primary-purple);
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 28px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 0.95rem;
 }
 
-/* HERO SECTION (2-COLUMN GRID) */
+/* HERO SECTION (EXPANDS ACROSS SCREEN) */
 .hero-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 30px;
+  gap: 60px;
   align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 
 .hero-text h1 {
-  font-size: 2.2rem;
+  font-size: 3.2rem;
   color: var(--text-main);
-  line-height: 1.25;
-  margin-bottom: 16px;
+  line-height: 1.2;
+  margin-bottom: 20px;
   font-weight: 800;
 }
 
 .hero-text p {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
+  max-width: 580px;
 }
 
 .hero-actions {
   display: flex;
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 16px;
+  max-width: 480px;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--accent-blue), var(--primary-purple));
   color: #fff;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   flex: 1;
 }
@@ -127,58 +129,25 @@ body {
   background-color: var(--soft-purple-bg);
   color: var(--primary-purple);
   border: 1px solid var(--primary-purple);
-  padding: 12px 24px;
+  padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   flex: 1;
 }
 
-.emergency-badge {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f9fafb;
-  padding: 12px 16px;
-  border-radius: 12px;
-  width: fit-content;
-}
-
-.icon-circle {
-  background: var(--soft-purple-bg);
-  color: var(--primary-purple);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge-title {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.badge-number {
-  display: block;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: var(--text-main);
-}
-
-/* HERO ARCH PHOTO CONTAINER */
+/* ARCH PHOTO CONTAINER */
 .hero-visual {
   display: flex;
   justify-content: center;
 }
 
 .arch-card {
-  width: 260px;
-  height: 320px;
+  width: 360px;
+  height: 460px;
   background: linear-gradient(180deg, #a7f3d0 0%, #3b82f6 100%);
-  border-radius: 130px 130px 20px 20px;
+  border-radius: 180px 180px 24px 24px;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -190,33 +159,32 @@ body {
   object-fit: cover;
 }
 
-/* FORM STYLING */
+/* FORMS LAYOUT */
 .form-container {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 10px 0;
+  max-width: 520px;
+  margin: 40px auto;
 }
 
 .form-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .form-header h2 {
   color: var(--text-main);
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 8px;
 }
 
 .form-header p {
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .form-section {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .form-group {
@@ -235,16 +203,16 @@ body {
 }
 
 label {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-main);
 }
 
 input, select {
-  padding: 12px;
+  padding: 14px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .btn-link {
@@ -253,18 +221,18 @@ input, select {
   color: var(--primary-purple);
   cursor: pointer;
   font-weight: 600;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 /* CONFIRMATION */
 .confirmation-box {
   text-align: center;
-  max-width: 480px;
-  margin: 0 auto;
+  max-width: 520px;
+  margin: 40px auto;
 }
 
 .checkmark-icon {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: #10b981;
   margin-bottom: 12px;
 }
@@ -273,22 +241,22 @@ input, select {
   background: #f9fafb;
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  padding: 16px;
-  margin: 20px 0;
+  padding: 20px;
+  margin: 24px 0;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-/* UTILITY CLASSES */
+/* UTILITIES */
 .hidden {
   display: none !important;
 }
 
 .status-message {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 20px;
   font-weight: 600;
 }
 
@@ -296,10 +264,17 @@ input, select {
   color: #10b981;
 }
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
+/* RESPONSIVE FOR TABLETS / MOBILE */
+@media (max-width: 1024px) {
+  .app-card {
+    padding: 20px 30px;
+  }
   .hero-grid {
     grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-text h1 {
+    font-size: 2.5rem;
   }
   .nav-links {
     display: none;

@@ -15,10 +15,9 @@
     <nav class="navbar">
       <div class="brand-logo">Ubuntu <span>Health</span></div>
       <ul class="nav-links">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" id="navHomeLink" class="active">Home</a></li>
+        <li><a href="#" id="navServicesLink">Services</a></li>
+        <li><a href="#" id="navAboutLink">About</a></li>
       </ul>
       <button type="button" id="navLoginBtn" class="btn-top-right">Log In</button>
     </nav>
@@ -26,7 +25,6 @@
     <!-- PAGE 1: WELCOME / HERO PAGE -->
     <section id="welcomePage" class="page-view">
       <div class="hero-grid">
-        <!-- Left Content Column -->
         <div class="hero-text">
           <h1>Your Health, Our Priority.<br>Book An Appointment</h1>
           <p>Choose from our trusted doctors and specialists, pick a convenient time, and get the care you need—all with just a few clicks.</p>
@@ -37,7 +35,6 @@
           </div>
         </div>
 
-        <!-- Right Visual Arch Column -->
         <div class="hero-visual">
           <div class="arch-card">
             <img src="AdobeStock_305412791-scaled.jpeg" alt="Healthcare Professional">
@@ -46,7 +43,110 @@
       </div>
     </section>
 
-    <!-- PAGE 2: REGISTER PAGE -->
+    <!-- PAGE 2: SERVICES PAGE (Matched to your image) -->
+    <section id="servicesPage" class="page-view hidden">
+      <div class="content-container wide-container">
+        <header class="section-header">
+          <h2>Our Services <span class="badge">8 of 8 shown</span></h2>
+          <p>Select a service to book a consultation with our experienced clinical team.</p>
+        </header>
+        
+        <div class="services-grid">
+          <!-- Service 1 -->
+          <div class="service-card">
+            <div class="service-code">GP-01</div>
+            <h3>General Consultation</h3>
+            <p>General check-ups, minor illness, and referrals.</p>
+            <div class="service-meta">20 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="General Consultation (GP-01)">Book this service</button>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="service-card">
+            <div class="service-code">CH-02</div>
+            <h3>Chronic Medication</h3>
+            <p>Repeat scripts for hypertension, diabetes, and asthma.</p>
+            <div class="service-meta">15 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Chronic Medication (CH-02)">Book this service</button>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="service-card">
+            <div class="service-code">IM-03</div>
+            <h3>Immunisations</h3>
+            <p>Childhood and adult vaccination schedules.</p>
+            <div class="service-meta">15 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Immunisations (IM-03)">Book this service</button>
+          </div>
+
+          <!-- Service 4 -->
+          <div class="service-card">
+            <div class="service-code">MC-04</div>
+            <h3>Maternal & Child Health</h3>
+            <p>Antenatal check-ups and growth monitoring.</p>
+            <div class="service-meta">30 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Maternal & Child Health (MC-04)">Book this service</button>
+          </div>
+
+          <!-- Service 5 -->
+          <div class="service-card">
+            <div class="service-code">HT-05</div>
+            <h3>HIV/TB Screening</h3>
+            <p>Confidential testing and counselling.</p>
+            <div class="service-meta">25 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="HIV/TB Screening (HT-05)">Book this service</button>
+          </div>
+
+          <!-- Service 6 -->
+          <div class="service-card">
+            <div class="service-code">MH-06</div>
+            <h3>Mental Health Support</h3>
+            <p>Counselling sessions with a clinic psychologist.</p>
+            <div class="service-meta">30 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Mental Health Support (MH-06)">Book this service</button>
+          </div>
+
+          <!-- Service 7 -->
+          <div class="service-card">
+            <div class="service-code">MP-07</div>
+            <h3>Minor Procedures</h3>
+            <p>Wound care, dressings, and small procedures.</p>
+            <div class="service-meta">20 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Minor Procedures (MP-07)">Book this service</button>
+          </div>
+
+          <!-- Service 8 -->
+          <div class="service-card">
+            <div class="service-code">FP-08</div>
+            <h3>Family Planning</h3>
+            <p>Contraception advice and provision.</p>
+            <div class="service-meta">15 min • appointment</div>
+            <button type="button" class="btn-service-book" data-service="Family Planning (FP-08)">Book this service</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: ABOUT PAGE -->
+    <section id="aboutPage" class="page-view hidden">
+      <div class="content-container">
+        <header class="section-header">
+          <h2>About Ubuntu Health Clinic</h2>
+          <p>Humanity through healing and excellence in healthcare.</p>
+        </header>
+
+        <div class="about-content">
+          <p>At <strong>Ubuntu Health Clinic</strong>, we believe in the philosophy of <em>Ubuntu</em>—"I am because we are." Our mission is to build a healthier community by offering patient-centered, modern medical services with warmth and integrity.</p>
+          <p>Equipped with advanced diagnostics, experienced healthcare professionals, and cutting-edge technology, we minimize wait times and maximize care quality. Whether you need a quick routine checkup or specialized consultation, your wellness is our main priority.</p>
+        </div>
+
+        <div class="action-center">
+          <button type="button" class="btn-primary btn-book-now">Experience Better Care Today</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: REGISTER PAGE -->
     <section id="registerPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -73,7 +173,7 @@
       </div>
     </section>
 
-    <!-- PAGE 3: LOGIN PAGE -->
+    <!-- PAGE 5: LOGIN PAGE -->
     <section id="loginPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -96,43 +196,67 @@
       </div>
     </section>
 
-    <!-- PAGE 4: BOOKING PAGE -->
+    <!-- PAGE 6: BOOKING & APPOINTMENTS DASHBOARD (Matched to your second image) -->
     <section id="bookingPage" class="page-view hidden">
-      <div class="form-container">
-        <header class="form-header">
-          <h2>Schedule Your Visit</h2>
-          <p>Select your preferred department and appointment time.</p>
+      <div class="content-container wide-container">
+        <header class="dashboard-header">
+          <h2 id="welcomeUserGreeting">Welcome, Patient</h2>
+          <button type="button" id="btnLogout" class="btn-link logout-btn">Log out</button>
         </header>
 
-        <form id="bookingForm" class="form-section">
-          <div class="form-group">
-            <label for="doctorType">Department / Service</label>
-            <select id="doctorType" required>
-              <option value="" disabled selected>Select a department</option>
-              <option value="General Practitioner">General Practitioner</option>
-              <option value="Dentistry">Dentistry</option>
-              <option value="Pediatrics">Pediatrics</option>
-              <option value="Dermatology">Dermatology</option>
-            </select>
+        <div class="dashboard-grid">
+          <!-- LEFT: BOOKING / EDIT FORM -->
+          <div class="booking-card">
+            <h3 id="formTitle">Book an appointment</h3>
+            <form id="bookingForm" class="form-section">
+              <input type="hidden" id="editingIndex" value="-1">
+              
+              <div class="form-group">
+                <label for="doctorType">Service</label>
+                <select id="doctorType" required>
+                  <option value="" disabled selected>Select a service</option>
+                  <option value="General Consultation (GP-01)">General Consultation (GP-01)</option>
+                  <option value="Chronic Medication (CH-02)">Chronic Medication (CH-02)</option>
+                  <option value="Immunisations (IM-03)">Immunisations (IM-03)</option>
+                  <option value="Maternal & Child Health (MC-04)">Maternal & Child Health (MC-04)</option>
+                  <option value="HIV/TB Screening (HT-05)">HIV/TB Screening (HT-05)</option>
+                  <option value="Mental Health Support (MH-06)">Mental Health Support (MH-06)</option>
+                  <option value="Minor Procedures (MP-07)">Minor Procedures (MP-07)</option>
+                  <option value="Family Planning (FP-08)">Family Planning (FP-08)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="bookingDate">Preferred date</label>
+                <input type="date" id="bookingDate" required>
+              </div>
+
+              <div class="form-group">
+                <label for="bookingTime">Preferred time</label>
+                <input type="time" id="bookingTime" required>
+              </div>
+
+              <div class="form-actions-stack">
+                <button type="submit" id="btnSubmitBooking" class="btn-primary">Confirm booking</button>
+                <button type="button" id="btnCancelEdit" class="btn-secondary hidden">Cancel editing</button>
+              </div>
+            </form>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="bookingDate">Preferred Date</label>
-              <input type="date" id="bookingDate" required>
-            </div>
-            <div class="form-group">
-              <label for="bookingTime">Preferred Time</label>
-              <input type="time" id="bookingTime" required>
+          <!-- RIGHT: MY APPOINTMENTS SECTION -->
+          <div class="appointments-card">
+            <h3>My appointments</h3>
+            <div id="appointmentsListContainer">
+              <div id="noAppointmentsMsg" class="empty-state-box">
+                No appointments booked yet. Use the form to reserve a slot.
+              </div>
             </div>
           </div>
-
-          <button type="submit" class="btn-primary">Confirm Appointment</button>
-        </form>
+        </div>
       </div>
     </section>
 
-    <!-- PAGE 5: CONFIRMATION PAGE -->
+    <!-- PAGE 7: CONFIRMATION PAGE -->
     <section id="confirmationPage" class="page-view hidden">
       <div class="confirmation-box">
         <div class="checkmark-icon">✓</div>
@@ -140,13 +264,13 @@
         <p class="subtitle">Thank you for choosing Ubuntu Health Clinic. Your appointment details are below:</p>
         
         <div class="details-card">
-          <p><strong>Patient Email:</strong> <span id="summaryEmail">-</span></p>
-          <p><strong>Department:</strong> <span id="summaryDepartment">-</span></p>
+          <p><strong>Patient:</strong> <span id="summaryEmail">Patient</span></p>
+          <p><strong>Service:</strong> <span id="summaryDepartment">-</span></p>
           <p><strong>Date:</strong> <span id="summaryDate">-</span></p>
           <p><strong>Time:</strong> <span id="summaryTime">-</span></p>
         </div>
 
-        <button type="button" id="btnNewBooking" class="btn-secondary">Book Another Visit</button>
+        <button type="button" id="btnGoToDashboard" class="btn-primary">View My Appointments</button>
       </div>
     </section>
 

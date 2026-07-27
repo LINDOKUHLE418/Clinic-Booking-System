@@ -1,13 +1,14 @@
 :root {
-  --primary-red: #dc2626;
-  --dark-red: #991b1b;
+  --primary-purple: #7c3aed;
+  --dark-purple: #5b21b6;
+  --light-purple: #a78bfa;
+  --accent-purple: #c084fc;
   --dark-blue: #0f172a;
   --card-blue: #1e293b;
   --text-main: #f8fafc;
   --text-muted: #cbd5e1;
   --border-color: #334155;
-  --green-btn: #10b981;
-  --green-btn-hover: #059669;
+  --green-accent: #10b981;
 }
 
 * {
@@ -18,18 +19,18 @@
 }
 
 body {
-  background-color: var(--primary-red);
+  background-color: var(--primary-purple);
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* FULL PAGE WRAPPER */
+/* FULL PAGE WRAPPER WITH DOMINANT PURPLE BACKGROUND */
 .app-card {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--primary-red);
+  background-color: var(--primary-purple);
   padding: 30px 80px;
   box-sizing: border-box;
 }
@@ -44,6 +45,7 @@ body {
   background-color: var(--dark-blue);
   padding: 16px 30px;
   border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .brand-logo {
@@ -53,7 +55,7 @@ body {
 }
 
 .brand-logo span {
-  color: var(--primary-red);
+  color: var(--accent-purple);
 }
 
 .nav-links {
@@ -71,11 +73,11 @@ body {
 }
 
 .nav-links a.active, .nav-links a:hover {
-  color: var(--primary-red);
+  color: var(--accent-purple);
 }
 
 .btn-top-right {
-  background-color: var(--primary-red);
+  background-color: var(--primary-purple);
   color: #fff;
   border: none;
   padding: 12px 28px;
@@ -87,7 +89,7 @@ body {
 }
 
 .btn-top-right:hover {
-  background-color: var(--dark-red);
+  background-color: var(--dark-purple);
 }
 
 /* HERO SECTION */
@@ -101,6 +103,7 @@ body {
   padding: 40px;
   background-color: var(--dark-blue);
   border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .hero-text h1 {
@@ -126,7 +129,7 @@ body {
 }
 
 .btn-primary {
-  background: var(--primary-red);
+  background: var(--primary-purple);
   color: #fff;
   border: none;
   padding: 14px 28px;
@@ -139,13 +142,13 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: var(--dark-red);
+  background-color: var(--dark-purple);
 }
 
 .btn-secondary {
   background-color: transparent;
   color: #ffffff;
-  border: 2px solid var(--primary-red);
+  border: 2px solid var(--primary-purple);
   padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
@@ -156,7 +159,7 @@ body {
 }
 
 .btn-secondary:hover {
-  background-color: var(--primary-red);
+  background-color: var(--primary-purple);
 }
 
 /* ARCH CONTAINER */
@@ -168,7 +171,7 @@ body {
 .arch-card {
   width: 360px;
   height: 460px;
-  background: linear-gradient(180deg, var(--primary-red) 0%, var(--dark-blue) 100%);
+  background: linear-gradient(180deg, var(--accent-purple) 0%, var(--dark-blue) 100%);
   border-radius: 180px 180px 24px 24px;
   overflow: hidden;
   display: flex;
@@ -188,6 +191,7 @@ body {
   background-color: var(--dark-blue);
   padding: 40px;
   border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .wide-container {
@@ -213,11 +217,11 @@ body {
 
 .badge {
   font-size: 0.85rem;
-  color: #f87171;
+  color: var(--accent-purple);
   font-weight: normal;
 }
 
-/* SERVICES GRID (Matched to Image 1) */
+/* SERVICES GRID */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -230,15 +234,14 @@ body {
   padding: 20px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  border-left: 4px solid var(--primary-red);
+  border-left: 4px solid var(--primary-purple);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
 }
 
 .service-code {
-  color: #f87171;
+  color: var(--accent-purple);
   font-size: 0.8rem;
   font-weight: bold;
   margin-bottom: 6px;
@@ -265,9 +268,9 @@ body {
 }
 
 .btn-service-book {
-  background-color: #1e3a8a;
+  background-color: rgba(124, 58, 237, 0.2);
   color: #ffffff;
-  border: 1px solid #3b82f6;
+  border: 1px solid var(--primary-purple);
   padding: 10px;
   border-radius: 6px;
   font-weight: 600;
@@ -277,8 +280,7 @@ body {
 }
 
 .btn-service-book:hover {
-  background-color: var(--primary-red);
-  border-color: var(--primary-red);
+  background-color: var(--primary-purple);
 }
 
 /* ABOUT SECTION */
@@ -305,6 +307,7 @@ body {
   background-color: var(--dark-blue);
   padding: 40px;
   border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .form-header {
@@ -357,13 +360,13 @@ input::placeholder {
 .btn-link {
   background: none;
   border: none;
-  color: var(--primary-red);
+  color: var(--accent-purple);
   cursor: pointer;
   font-weight: 600;
   margin-top: 8px;
 }
 
-/* BOOKING DASHBOARD (Matched to Image 2) */
+/* BOOKING DASHBOARD */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -380,7 +383,7 @@ input::placeholder {
 
 .logout-btn {
   font-size: 1rem;
-  color: #f87171;
+  color: var(--accent-purple);
   text-decoration: underline;
 }
 
@@ -422,7 +425,7 @@ input::placeholder {
 /* APPOINTMENT CARDS FOR EDITING */
 .appointment-item {
   background-color: var(--dark-blue);
-  border-left: 4px solid var(--primary-red);
+  border-left: 4px solid var(--primary-purple);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 14px;
@@ -448,7 +451,7 @@ input::placeholder {
 }
 
 .btn-edit-appt {
-  background-color: #2563eb;
+  background-color: var(--primary-purple);
   color: #ffffff;
   border: none;
   padding: 8px 12px;
@@ -477,11 +480,12 @@ input::placeholder {
   background-color: var(--dark-blue);
   padding: 40px;
   border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .checkmark-icon {
   font-size: 3rem;
-  color: #10b981;
+  color: var(--green-accent);
   margin-bottom: 12px;
 }
 
@@ -509,7 +513,7 @@ input::placeholder {
 }
 
 .status-message.success {
-  color: #10b981;
+  color: var(--green-accent);
 }
 
 /* RESPONSIVE DESIGN */

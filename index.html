@@ -13,12 +13,12 @@
 
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
-      <div class="brand-logo">Ubuntu <span>Health</span></div>
+      <div class="brand-logo" id="navLogo" style="cursor: pointer;">Ubuntu <span>Health</span></div>
       <ul class="nav-links">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" id="navHome" class="active">Home</a></li>
+        <li><a href="#" id="navServices">Services</a></li>
+        <li><a href="#" id="navAbout">About</a></li>
+        <li><a href="#" id="navContact">Contact</a></li>
       </ul>
       <button type="button" id="navLoginBtn" class="btn-top-right">Log In</button>
     </nav>
@@ -46,7 +46,59 @@
       </div>
     </section>
 
-    <!-- PAGE 2: REGISTER PAGE -->
+    <!-- SERVICES PAGE -->
+    <section id="servicesPage" class="page-view hidden">
+      <div class="info-container">
+        <h2>Our Healthcare Services</h2>
+        <p class="section-subtitle">We offer a wide range of medical services to keep you and your family healthy.</p>
+        
+        <div class="services-grid">
+          <div class="service-card">
+            <h3>🩺 General Practice</h3>
+            <p>Comprehensive health check-ups, routine care, diagnosis, and treatment for everyday health conditions.</p>
+          </div>
+          <div class="service-card">
+            <h3>🦷 Dentistry</h3>
+            <p>Complete dental care including cleanings, check-ups, fillings, and preventive oral health care.</p>
+          </div>
+          <div class="service-card">
+            <h3>👶 Pediatrics</h3>
+            <p>Specialized healthcare and developmental check-ups for infants, children, and adolescents.</p>
+          </div>
+          <div class="service-card">
+            <h3>🧴 Dermatology</h3>
+            <p>Expert evaluation and medical treatment for skin, hair, and nail health conditions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="aboutPage" class="page-view hidden">
+      <div class="info-container">
+        <h2>About Ubuntu Health Clinic</h2>
+        <p class="about-text">
+          Ubuntu Health Clinic is dedicated to providing compassionate, accessible, and high-quality healthcare to our local community. Guided by the principle of <em>Ubuntu</em> ("I am because we are"), our mission is to ensure every patient receives patient-centered care from experienced health professionals in a welcoming environment.
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section id="contactPage" class="page-view hidden">
+      <div class="info-container">
+        <h2>Contact Us</h2>
+        <p class="section-subtitle">Have questions or need assistance? Reach out to our team.</p>
+        
+        <div class="contact-details">
+          <p><strong>📍 Address:</strong> 123 Healthcare Boulevard, South Africa</p>
+          <p><strong>📞 Phone:</strong> +27 11 000 7860</p>
+          <p><strong>✉️ Email:</strong> support@ubuntuhealth.co.za</p>
+          <p><strong>⏰ Hours:</strong> Monday – Friday: 08:00 – 17:00 | Saturday: 08:00 – 13:00</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER PAGE -->
     <section id="registerPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -73,7 +125,7 @@
       </div>
     </section>
 
-    <!-- PAGE 3: LOGIN PAGE -->
+    <!-- LOGIN PAGE -->
     <section id="loginPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -96,7 +148,7 @@
       </div>
     </section>
 
-    <!-- PAGE 4: BOOKING PAGE -->
+    <!-- BOOKING PAGE -->
     <section id="bookingPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -132,7 +184,7 @@
       </div>
     </section>
 
-    <!-- PAGE 5: CONFIRMATION PAGE -->
+    <!-- CONFIRMATION PAGE -->
     <section id="confirmationPage" class="page-view hidden">
       <div class="confirmation-box">
         <div class="checkmark-icon">✓</div>

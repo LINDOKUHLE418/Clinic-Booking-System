@@ -17,14 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSubmitBooking = document.getElementById("btnSubmitBooking");
   const btnCancelEdit = document.getElementById("btnCancelEdit");
 
-  // User State
-  let currentUser = "Lerato"; // Default mock name
-  let pendingSelectedService = ""; // Temporary storage when user clicks book before logging in
+  // Database State (In-Memory Registered Users)
+  const registeredUsers = []; // Stores { name, email, password }
+  let currentUser = null; // Stores logged in user object
+  let pendingSelectedService = ""; // Stores service chosen before logging in
+
   const appointmentsListContainer = document.getElementById("appointmentsListContainer");
   const welcomeUserGreeting = document.getElementById("welcomeUserGreeting");
   const statusMessage = document.getElementById("statusMessage");
 
-  // Appointment Storage (In-memory)
+  // Appointment Storage
   let userAppointments = [];
 
   // Nav Links
@@ -60,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (activePage === aboutPage && navAboutLink) navAboutLink.classList.add("active");
   }
 
-  // Nav link click events
+  // Navigation handlers
   if (navHomeLink) navHomeLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(welcomePage); });
   if (navServicesLink) navServicesLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(servicesPage); });
   if (navAboutLink) navAboutLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(aboutPage); });
@@ -70,16 +72,39 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnGoToRegister) btnGoToRegister.addEventListener("click", () => goToPage(registerPage));
   if (btnBackFromReg) btnBackFromReg.addEventListener("click", () => goToPage(welcomePage));
   if (btnBackFromLogin) btnBackFromLogin.addEventListener("click", () => goToPage(welcomePage));
-  if (btnLogout) btnLogout.addEventListener("click", () => goToPage(welcomePage));
+  
+  if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+      currentUser = null;
+      userAppointments = [];
+      goToPage(welcomePage);
+    });
+  }
+
   if (btnGoToDashboard) btnGoToDashboard.addEventListener("click", () => goToPage(bookingPage));
+
+  // PASSWORD SHOW / HIDE TOGGLE FUNCTIONALITY
+  document.querySelectorAll(".btn-toggle-password").forEach(button => {
+    button.addEventListener("click", () => {
+      const targetId = button.getAttribute("data-target");
+      const passwordInput = document.getElementById(targetId);
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        button.textContent = "Hide";
+      } else {
+        passwordInput.type = "password";
+        button.textContent = "Show";
+      }
+    });
+  });
 
   // Redirect to Log In page first when "Book this service" is clicked
   document.querySelectorAll(".btn-service-book").forEach(btn => {
     btn.addEventListener("click", (e) => {
       pendingSelectedService = e.target.getAttribute("data-service");
       goToPage(loginPage);
-      statusMessage.textContent = "Please log in to complete your booking.";
-      statusMessage.className = "status-message";
+      showStatus("Please log in or register first to complete your booking.", "error");
     });
   });
 
@@ -89,7 +114,77 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Render list of booked appointments
+  // Helper to show status/error messages
+  function showStatus(text, type) {
+    statusMessage.textContent = text;
+    statusMessage.className = `status-message ${type}`;
+  }
+
+  // REGISTER HANDLER (Validates & saves user)
+  if (registerForm) {
+    registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nameVal = document.getElementById("regName").value.trim();
+      const emailVal = document.getElementById("regEmail").value.trim().toLowerCase();
+      const passwordVal = document.getElementById("regPassword").value;
+
+      // Check if email already registered
+      const existingUser = registeredUsers.find(user => user.email === emailVal);
+      if (existingUser) {
+        showStatus("An account with this email already exists. Please log in.", "error");
+        return;
+      }
+
+      // Save new account
+      registeredUsers.push({ name: nameVal, email: emailVal, password: passwordVal });
+      
+      showStatus("Account registered successfully! Redirecting to login...", "success");
+      registerForm.reset();
+
+      setTimeout(() => goToPage(loginPage), 1500);
+    });
+  }
+
+  // LOGIN HANDLER (Strict authentication check)
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const emailVal = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const passwordVal = document.getElementById("loginPassword").value;
+
+      // Find user in database
+      const foundUser = registeredUsers.find(user => user.email === emailVal);
+
+      if (!foundUser) {
+        showStatus("No account found with this email. Please register first.", "error");
+        return;
+      }
+
+      if (foundUser.password !== passwordVal) {
+        showStatus("Incorrect password. Please try again.", "error");
+        return;
+      }
+
+      // Authentication Successful!
+      currentUser = foundUser;
+      welcomeUserGreeting.textContent = `Welcome, ${currentUser.name}`;
+      showStatus("Log in successful! Redirecting to dashboard...", "success");
+      loginForm.reset();
+
+      setTimeout(() => {
+        goToPage(bookingPage);
+        renderAppointments();
+        
+        // Auto-select pending service if selected prior to login
+        if (pendingSelectedService) {
+          document.getElementById("doctorType").value = pendingSelectedService;
+          pendingSelectedService = ""; 
+        }
+      }, 1000);
+    });
+  }
+
+  // Render appointments
   function renderAppointments() {
     if (userAppointments.length === 0) {
       appointmentsListContainer.innerHTML = `
@@ -143,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnCancelEdit.addEventListener("click", resetBookingForm);
   }
 
-  // Cancel functionality
+  // Cancel appointment
   window.cancelAppointment = function(index) {
     if (confirm("Are you sure you want to cancel this appointment?")) {
       userAppointments.splice(index, 1);
@@ -151,45 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
       resetBookingForm();
     }
   };
-
-  // Login handler
-  if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const emailVal = document.getElementById("loginEmail").value;
-      if (emailVal) {
-        currentUser = emailVal.split("@")[0];
-      }
-      welcomeUserGreeting.textContent = `Welcome, ${currentUser}`;
-      statusMessage.textContent = "Log in successful! Redirecting to booking page...";
-      statusMessage.className = "status-message success";
-      loginForm.reset();
-
-      setTimeout(() => {
-        goToPage(bookingPage);
-        renderAppointments();
-        
-        // If they clicked a service on the services page prior to logging in, auto-select it
-        if (pendingSelectedService) {
-          document.getElementById("doctorType").value = pendingSelectedService;
-          pendingSelectedService = ""; // clear temporary selection
-        }
-      }, 1000);
-    });
-  }
-
-  // Register handler
-  if (registerForm) {
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nameVal = document.getElementById("regName").value;
-      if (nameVal) currentUser = nameVal;
-      statusMessage.textContent = "Account registered successfully! Please log in.";
-      statusMessage.className = "status-message success";
-      registerForm.reset();
-      setTimeout(() => goToPage(loginPage), 1500);
-    });
-  }
 
   // Booking submit handler
   if (bookingForm) {
@@ -207,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
         userAppointments.push({ service, date, time });
       }
 
-      document.getElementById("summaryEmail").textContent = currentUser;
+      document.getElementById("summaryEmail").textContent = currentUser ? currentUser.name : "Patient";
       document.getElementById("summaryDepartment").textContent = service;
       document.getElementById("summaryDate").textContent = date;
       document.getElementById("summaryTime").textContent = time;

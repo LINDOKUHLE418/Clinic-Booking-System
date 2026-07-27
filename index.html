@@ -147,6 +147,7 @@
     </section>
 
     <!-- PAGE 4: REGISTER PAGE -->
+    <!-- PAGE 4: REGISTER PAGE -->
     <section id="registerPage" class="page-view hidden">
       <div class="form-container">
         <header class="form-header">
@@ -165,10 +166,39 @@
           </div>
           <div class="form-group">
             <label for="regPassword">Create Password</label>
-            <input type="password" id="regPassword" placeholder="Create a password" required>
+            <div class="password-input-wrapper">
+              <input type="password" id="regPassword" placeholder="Create a password" required>
+              <button type="button" class="btn-toggle-password" data-target="regPassword">Show</button>
+            </div>
           </div>
           <button type="submit" class="btn-primary">Complete Registration</button>
           <button type="button" id="btnBackFromReg" class="btn-link">← Back to Home Page</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PAGE 5: LOGIN PAGE -->
+    <section id="loginPage" class="page-view hidden">
+      <div class="form-container">
+        <header class="form-header">
+          <h2>Patient Log In</h2>
+          <p>Sign in to your account to schedule your appointment.</p>
+        </header>
+
+        <form id="loginForm" class="form-section">
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="loginPassword" placeholder="Enter your password" required>
+              <button type="button" class="btn-toggle-password" data-target="loginPassword">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Log In</button>
+          <button type="button" id="btnBackFromLogin" class="btn-link">← Back to Home Page</button>
         </form>
       </div>
     </section>

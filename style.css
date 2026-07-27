@@ -537,3 +537,36 @@ input::placeholder {
     grid-template-columns: 1fr;
   }
 }
+.status-message.error {
+  color: #ef4444;
+}
+/* PASSWORD TOGGLE STYLES */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 70px; /* Leave space for the show/hide button */
+}
+
+.btn-toggle-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--accent-purple);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.btn-toggle-password:hover {
+  background-color: rgba(167, 139, 250, 0.15);
+  color: #ffffff;
+}

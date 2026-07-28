@@ -7,7 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const setCurrentUser = (user) => localStorage.setItem("ubuntu_current_user", JSON.stringify(user));
   const removeCurrentUser = () => localStorage.removeItem("ubuntu_current_user");
 
-  const getAppointments = () => JSON.parse(localStorage.getItem("ubuntu_appointments")) || [];
+  const getAppointments = () => {
+    let apps = JSON.parse(localStorage.getItem("ubuntu_appointments")) || [];
+    // Automatically purge appointments older than today
+    const todayStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+    const activeApps = apps.filter(app => app.date >= todayStr);
+    
+    if (activeApps.length !== apps.length) {
+      saveAppointments(activeApps);
+    }
+    return activeApps;
+  };
+  
   const saveAppointments = (apps) => localStorage.setItem("ubuntu_appointments", JSON.stringify(apps));
 
   // --- NAVIGATION ELEMENTS ---
@@ -48,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Set initial active status
+  // Navigation Links
   navHome.addEventListener("click", (e) => { e.preventDefault(); showPage("welcome"); });
   navServices.addEventListener("click", (e) => { e.preventDefault(); showPage("services"); });
   navAbout.addEventListener("click", (e) => { e.preventDefault(); showPage("about"); });
@@ -99,7 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("regPassword").value;
 
     const users = getUsers();
-    const existingUser = users.find(u => u.email === email);
+    
+    // Strict duplicate email check across all registered users
+    const existingUser = users.find(u => u.email.toLowerCase() === email);
 
     if (existingUser) {
       showStatus("An account with this email already exists. Please log in.", "error");
@@ -110,19 +123,16 @@ document.addEventListener("DOMContentLoaded", () => {
       firstName: firstName,
       surname: surname,
       fullName: `${firstName} ${surname}`,
-      email: email,
+      email: email, // Stored explicitly in lowercase
       password: password
     };
 
     users.push(newUser);
     saveUsers(users);
-    setCurrentUser(newUser);
 
-    showStatus("Registration successful! Welcome to Ubuntu Health.", "success");
+    showStatus("Registration successful! Please log in with your credentials.", "success");
     registerForm.reset();
-    updateDashboardGreeting();
-    showPage("booking");
-    renderAppointments();
+    showPage("login");
   });
 
   // --- LOGIN LOGIC ---
@@ -134,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = document.getElementById("loginPassword").value;
 
     const users = getUsers();
-    const user = users.find(u => u.email === email);
+    const user = users.find(u => u.email.toLowerCase() === email);
 
     if (!user) {
       showStatus("No account found with this email. Please register first.", "error");
@@ -192,9 +202,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- BOOKING & APPOINTMENTS MANAGEMENT ---
   const bookingForm = document.getElementById("bookingForm");
-  const editingIndexInput = document.getElementById("editingIndex");
+  const editingIndexInput = document.getElementById("editingIndex"); // Holds the Appointment ID when editing
   const btnSubmitBooking = document.getElementById("btnSubmitBooking");
   const btnCancelEdit = document.getElementById("btnCancelEdit");
+
+  // Restrict appointment date picker to today and future dates
+  const bookingDateInput = document.getElementById("bookingDate");
+  if (bookingDateInput) {
+    const todayStr = new Date().toISOString().split("T")[0];
+    bookingDateInput.setAttribute("min", todayStr);
+  }
 
   bookingForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -209,29 +226,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const service = document.getElementById("doctorType").value;
     const date = document.getElementById("bookingDate").value;
     const time = document.getElementById("bookingTime").value;
-    const editIdx = parseInt(editingIndexInput.value, 10);
+    const editingId = parseInt(editingIndexInput.value, 10);
 
     let appointments = getAppointments();
 
-    if (editIdx >= 0) {
-      // Update existing booking
-      appointments[editIdx] = {
-        id: appointments[editIdx].id,
-        userEmail: currentUser.email,
-        patientName: currentUser.fullName,
-        service: service,
-        date: date,
-        time: time
-      };
-      saveAppointments(appointments);
-      showStatus("Appointment updated successfully!", "success");
+    if (editingId > 0) {
+      // Update existing booking by unique ID
+      const appIndex = appointments.findIndex(a => a.id === editingId);
+      if (appIndex !== -1) {
+        appointments[appIndex] = {
+          id: editingId,
+          userEmail: currentUser.email.toLowerCase(),
+          patientName: currentUser.fullName,
+          service: service,
+          date: date,
+          time: time
+        };
+        saveAppointments(appointments);
+        showStatus("Appointment updated successfully!", "success");
+      }
       resetBookingForm();
       renderAppointments();
     } else {
-      // Create new booking
+      // Create brand new booking
       const newBooking = {
         id: Date.now(),
-        userEmail: currentUser.email,
+        userEmail: currentUser.email.toLowerCase(),
         patientName: currentUser.fullName,
         service: service,
         date: date,
@@ -274,59 +294,60 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("appointmentsListContainer");
     if (!container || !currentUser) return;
 
+    // Get all non-expired appointments
     const appointments = getAppointments();
-    // Filter appointments for the currently logged-in user
-    const userApps = appointments.filter(a => a.userEmail === currentUser.email);
+    
+    // Filter specifically for the logged in user's email
+    const userApps = appointments.filter(a => a.userEmail.toLowerCase() === currentUser.email.toLowerCase());
 
     if (userApps.length === 0) {
       container.innerHTML = `
         <div id="noAppointmentsMsg" class="empty-state-box">
-          No appointments booked yet. Use the form to reserve a slot.
+          No upcoming appointments booked yet. Use the form to reserve a slot.
         </div>`;
       return;
     }
 
     let html = '<div class="appointments-list">';
-    appointments.forEach((app, index) => {
-      if (app.userEmail === currentUser.email) {
-        html += `
-          <div class="appointment-item-card">
-            <div class="app-details">
-              <h4>${app.service}</h4>
-              <p>📅 ${app.date} at ⏰ ${app.time}</p>
-            </div>
-            <div class="app-actions">
-              <button type="button" class="btn-edit" onclick="editAppointment(${index})">Edit</button>
-              <button type="button" class="btn-delete" onclick="deleteAppointment(${index})">Cancel</button>
-            </div>
+    userApps.forEach((app) => {
+      html += `
+        <div class="appointment-item-card">
+          <div class="app-details">
+            <h4>${app.service}</h4>
+            <p>📅 ${app.date} at ⏰ ${app.time}</p>
           </div>
-        `;
-      }
+          <div class="app-actions">
+            <button type="button" class="btn-edit" onclick="editAppointment(${app.id})">Edit</button>
+            <button type="button" class="btn-delete" onclick="deleteAppointment(${app.id})">Cancel</button>
+          </div>
+        </div>
+      `;
     });
     html += '</div>';
     container.innerHTML = html;
   }
 
-  // Global scope helper for edit/delete buttons rendered in innerHTML
-  window.editAppointment = function(index) {
+  // Edit Appointment Handler (Uses unique ID)
+  window.editAppointment = function(appId) {
     const appointments = getAppointments();
-    const app = appointments[index];
+    const app = appointments.find(a => a.id === appId);
     if (!app) return;
 
     document.getElementById("doctorType").value = app.service;
     document.getElementById("bookingDate").value = app.date;
     document.getElementById("bookingTime").value = app.time;
-    editingIndexInput.value = index;
+    editingIndexInput.value = app.id;
 
     document.getElementById("formTitle").textContent = "Edit appointment";
     btnSubmitBooking.textContent = "Update booking";
     btnCancelEdit.classList.remove("hidden");
   };
 
-  window.deleteAppointment = function(index) {
+  // Cancel/Delete Appointment Handler (Uses unique ID)
+  window.deleteAppointment = function(appId) {
     if (confirm("Are you sure you want to cancel this appointment?")) {
       let appointments = getAppointments();
-      appointments.splice(index, 1);
+      appointments = appointments.filter(a => a.id !== appId);
       saveAppointments(appointments);
       showStatus("Appointment cancelled.", "info");
       renderAppointments();
@@ -346,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 4000);
   }
 
-  // Check initial login state on page load
+  // Initialize view state
   const existingUser = getCurrentUser();
   if (existingUser) {
     updateDashboardGreeting();

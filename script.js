@@ -1,283 +1,354 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Page Elements
-  const welcomePage = document.getElementById("welcomePage");
-  const servicesPage = document.getElementById("servicesPage");
-  const aboutPage = document.getElementById("aboutPage");
-  const registerPage = document.getElementById("registerPage");
-  const loginPage = document.getElementById("loginPage");
-  const bookingPage = document.getElementById("bookingPage");
-  const confirmationPage = document.getElementById("confirmationPage");
+  // --- LOCAL STORAGE HELPERS ---
+  const getUsers = () => JSON.parse(localStorage.getItem("ubuntu_users")) || [];
+  const saveUsers = (users) => localStorage.setItem("ubuntu_users", JSON.stringify(users));
 
-  // Forms and Inputs
-  const registerForm = document.getElementById("registerForm");
-  const loginForm = document.getElementById("loginForm");
-  const bookingForm = document.getElementById("bookingForm");
-  const editingIndexInput = document.getElementById("editingIndex");
-  const formTitle = document.getElementById("formTitle");
-  const btnSubmitBooking = document.getElementById("btnSubmitBooking");
-  const btnCancelEdit = document.getElementById("btnCancelEdit");
+  const getCurrentUser = () => JSON.parse(localStorage.getItem("ubuntu_current_user"));
+  const setCurrentUser = (user) => localStorage.setItem("ubuntu_current_user", JSON.stringify(user));
+  const removeCurrentUser = () => localStorage.removeItem("ubuntu_current_user");
 
-  // Database State (In-Memory Registered Users)
-  const registeredUsers = []; // Stores { name, email, password }
-  let currentUser = null; // Stores logged in user object
-  let pendingSelectedService = ""; // Stores service chosen before logging in
+  const getAppointments = () => JSON.parse(localStorage.getItem("ubuntu_appointments")) || [];
+  const saveAppointments = (apps) => localStorage.setItem("ubuntu_appointments", JSON.stringify(apps));
 
-  const appointmentsListContainer = document.getElementById("appointmentsListContainer");
-  const welcomeUserGreeting = document.getElementById("welcomeUserGreeting");
-  const statusMessage = document.getElementById("statusMessage");
+  // --- NAVIGATION ELEMENTS ---
+  const pages = {
+    welcome: document.getElementById("welcomePage"),
+    services: document.getElementById("servicesPage"),
+    about: document.getElementById("aboutPage"),
+    register: document.getElementById("registerPage"),
+    login: document.getElementById("loginPage"),
+    booking: document.getElementById("bookingPage"),
+    confirmation: document.getElementById("confirmationPage")
+  };
 
-  // Appointment Storage
-  let userAppointments = [];
-
-  // Nav Links
-  const navHomeLink = document.getElementById("navHomeLink");
-  const navServicesLink = document.getElementById("navServicesLink");
-  const navAboutLink = document.getElementById("navAboutLink");
-
-  const btnGoToLogin = document.getElementById("btnGoToLogin");
+  const navHome = document.getElementById("navHomeLink");
+  const navServices = document.getElementById("navServicesLink");
+  const navAbout = document.getElementById("navAboutLink");
   const navLoginBtn = document.getElementById("navLoginBtn");
-  const btnGoToRegister = document.getElementById("btnGoToRegister");
-  const btnBackFromReg = document.getElementById("btnBackFromReg");
-  const btnBackFromLogin = document.getElementById("btnBackFromLogin");
-  const btnLogout = document.getElementById("btnLogout");
-  const btnGoToDashboard = document.getElementById("btnGoToDashboard");
 
-  function goToPage(pageToShow) {
-    const pages = [welcomePage, servicesPage, aboutPage, registerPage, loginPage, bookingPage, confirmationPage];
-    pages.forEach(page => {
-      if (page) page.classList.add("hidden");
+  // --- PAGE SWITCHER ---
+  function showPage(pageKey) {
+    Object.keys(pages).forEach(key => {
+      if (pages[key]) {
+        pages[key].classList.add("hidden");
+      }
     });
-    if (pageToShow) pageToShow.classList.remove("hidden");
-    if (statusMessage) statusMessage.textContent = "";
-
-    updateNavState(pageToShow);
+    if (pages[pageKey]) {
+      pages[pageKey].classList.remove("hidden");
+    }
+    
+    // Refresh header dynamic button state
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      navLoginBtn.textContent = "Dashboard";
+    } else {
+      navLoginBtn.textContent = "Log In";
+    }
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function updateNavState(activePage) {
-    const links = [navHomeLink, navServicesLink, navAboutLink];
-    links.forEach(link => { if (link) link.classList.remove("active"); });
+  // Set initial active status
+  navHome.addEventListener("click", (e) => { e.preventDefault(); showPage("welcome"); });
+  navServices.addEventListener("click", (e) => { e.preventDefault(); showPage("services"); });
+  navAbout.addEventListener("click", (e) => { e.preventDefault(); showPage("about"); });
 
-    if (activePage === welcomePage && navHomeLink) navHomeLink.classList.add("active");
-    if (activePage === servicesPage && navServicesLink) navServicesLink.classList.add("active");
-    if (activePage === aboutPage && navAboutLink) navAboutLink.classList.add("active");
-  }
+  navLoginBtn.addEventListener("click", () => {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      showPage("booking");
+      renderAppointments();
+    } else {
+      showPage("login");
+    }
+  });
 
-  // Navigation handlers
-  if (navHomeLink) navHomeLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(welcomePage); });
-  if (navServicesLink) navServicesLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(servicesPage); });
-  if (navAboutLink) navAboutLink.addEventListener("click", (e) => { e.preventDefault(); goToPage(aboutPage); });
+  // Buttons on Landing/About Pages
+  document.getElementById("btnGoToLogin")?.addEventListener("click", () => showPage("login"));
+  document.getElementById("btnGoToRegister")?.addEventListener("click", () => showPage("register"));
+  document.querySelectorAll(".btn-cta-register, .btn-book-now").forEach(btn => {
+    btn.addEventListener("click", () => showPage("register"));
+  });
 
-  if (btnGoToLogin) btnGoToLogin.addEventListener("click", () => goToPage(loginPage));
-  if (navLoginBtn) navLoginBtn.addEventListener("click", () => goToPage(loginPage));
-  if (btnGoToRegister) btnGoToRegister.addEventListener("click", () => goToPage(registerPage));
-  
-  // Target CTA Register button on the new welcome banner
-  const btnCtaRegister = document.querySelector(".btn-cta-register");
-  if (btnCtaRegister) {
-    btnCtaRegister.addEventListener("click", () => goToPage(registerPage));
-  }
+  document.getElementById("btnBackFromReg")?.addEventListener("click", () => showPage("welcome"));
+  document.getElementById("btnBackFromLogin")?.addEventListener("click", () => showPage("welcome"));
 
-  if (btnBackFromReg) btnBackFromReg.addEventListener("click", () => goToPage(welcomePage));
-  if (btnBackFromLogin) btnBackFromLogin.addEventListener("click", () => goToPage(welcomePage));
-  
-  if (btnLogout) {
-    btnLogout.addEventListener("click", () => {
-      currentUser = null;
-      userAppointments = [];
-      goToPage(welcomePage);
-    });
-  }
-
-  if (btnGoToDashboard) btnGoToDashboard.addEventListener("click", () => goToPage(bookingPage));
-
-  // PASSWORD SHOW / HIDE TOGGLE FUNCTIONALITY
-  document.querySelectorAll(".btn-toggle-password").forEach(button => {
-    button.addEventListener("click", () => {
-      const targetId = button.getAttribute("data-target");
-      const passwordInput = document.getElementById(targetId);
-
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        button.textContent = "Hide";
+  // Password Visibility Toggles
+  document.querySelectorAll(".btn-toggle-password").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const targetId = this.getAttribute("data-target");
+      const input = document.getElementById(targetId);
+      if (input.type === "password") {
+        input.type = "text";
+        this.textContent = "Hide";
       } else {
-        passwordInput.type = "password";
-        button.textContent = "Show";
+        input.type = "password";
+        this.textContent = "Show";
       }
     });
   });
 
-  // Redirect to Log In page first when "Book this service" is clicked
-  document.querySelectorAll(".btn-service-book").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      pendingSelectedService = e.target.getAttribute("data-service");
-      goToPage(loginPage);
-      showStatus("Please log in or register first to complete your booking.", "error");
-    });
-  });
+  // --- REGISTRATION LOGIC ---
+  const registerForm = document.getElementById("registerForm");
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const firstName = document.getElementById("regFirstName").value.trim();
+    const surname = document.getElementById("regSurname").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const password = document.getElementById("regPassword").value;
 
-  document.querySelectorAll(".btn-book-now").forEach(btn => {
-    btn.addEventListener("click", () => {
-      goToPage(loginPage);
-    });
-  });
+    const users = getUsers();
+    const existingUser = users.find(u => u.email === email);
 
-  // Helper to show status/error messages
-  function showStatus(text, type) {
-    statusMessage.textContent = text;
-    statusMessage.className = `status-message ${type}`;
-  }
-
-  // REGISTER HANDLER (Validates & saves user)
-  if (registerForm) {
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nameVal = document.getElementById("regName").value.trim();
-      const emailVal = document.getElementById("regEmail").value.trim().toLowerCase();
-      const passwordVal = document.getElementById("regPassword").value;
-
-      // Check if email already registered
-      const existingUser = registeredUsers.find(user => user.email === emailVal);
-      if (existingUser) {
-        showStatus("An account with this email already exists. Please log in.", "error");
-        return;
-      }
-
-      // Save new account
-      registeredUsers.push({ name: nameVal, email: emailVal, password: passwordVal });
-      
-      showStatus("Account registered successfully! Redirecting to login...", "success");
-      registerForm.reset();
-
-      setTimeout(() => goToPage(loginPage), 1500);
-    });
-  }
-
-  // LOGIN HANDLER (Strict authentication check)
-  if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const emailVal = document.getElementById("loginEmail").value.trim().toLowerCase();
-      const passwordVal = document.getElementById("loginPassword").value;
-
-      // Find user in database
-      const foundUser = registeredUsers.find(user => user.email === emailVal);
-
-      if (!foundUser) {
-        showStatus("No account found with this email. Please register first.", "error");
-        return;
-      }
-
-      if (foundUser.password !== passwordVal) {
-        showStatus("Incorrect password. Please try again.", "error");
-        return;
-      }
-
-      // Authentication Successful!
-      currentUser = foundUser;
-      welcomeUserGreeting.textContent = `Welcome, ${currentUser.name}`;
-      showStatus("Log in successful! Redirecting to dashboard...", "success");
-      loginForm.reset();
-
-      setTimeout(() => {
-        goToPage(bookingPage);
-        renderAppointments();
-        
-        // Auto-select pending service if selected prior to login
-        if (pendingSelectedService) {
-          document.getElementById("doctorType").value = pendingSelectedService;
-          pendingSelectedService = ""; 
-        }
-      }, 1000);
-    });
-  }
-
-  // Render appointments
-  function renderAppointments() {
-    if (userAppointments.length === 0) {
-      appointmentsListContainer.innerHTML = `
-        <div class="empty-state-box">
-          No appointments booked yet. Use the form to reserve a slot.
-        </div>
-      `;
+    if (existingUser) {
+      showStatus("An account with this email already exists. Please log in.", "error");
       return;
     }
 
-    appointmentsListContainer.innerHTML = "";
-    userAppointments.forEach((appt, index) => {
-      const apptDiv = document.createElement("div");
-      apptDiv.className = "appointment-item";
-      apptDiv.innerHTML = `
-        <div class="appt-details">
-          <h4>${appt.service}</h4>
-          <p>📅 ${appt.date} at ⏰ ${appt.time}</p>
-        </div>
-        <div class="appt-actions">
-          <button type="button" class="btn-edit-appt" onclick="startEditingAppointment(${index})">Edit</button>
-          <button type="button" class="btn-delete-appt" onclick="cancelAppointment(${index})">Cancel</button>
-        </div>
-      `;
-      appointmentsListContainer.appendChild(apptDiv);
-    });
-  }
+    const newUser = {
+      firstName: firstName,
+      surname: surname,
+      fullName: `${firstName} ${surname}`,
+      email: email,
+      password: password
+    };
 
-  // Edit functionality
-  window.startEditingAppointment = function(index) {
-    const appt = userAppointments[index];
-    document.getElementById("doctorType").value = appt.service;
-    document.getElementById("bookingDate").value = appt.date;
-    document.getElementById("bookingTime").value = appt.time;
+    users.push(newUser);
+    saveUsers(users);
+    setCurrentUser(newUser);
 
-    editingIndexInput.value = index;
-    formTitle.textContent = "Edit appointment";
-    btnSubmitBooking.textContent = "Save changes";
-    btnCancelEdit.classList.remove("hidden");
-  };
+    showStatus("Registration successful! Welcome to Ubuntu Health.", "success");
+    registerForm.reset();
+    updateDashboardGreeting();
+    showPage("booking");
+    renderAppointments();
+  });
 
-  function resetBookingForm() {
-    bookingForm.reset();
-    editingIndexInput.value = "-1";
-    formTitle.textContent = "Book an appointment";
-    btnSubmitBooking.textContent = "Confirm booking";
-    btnCancelEdit.classList.add("hidden");
-  }
+  // --- LOGIN LOGIC ---
+  const loginForm = document.getElementById("loginForm");
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
 
-  if (btnCancelEdit) {
-    btnCancelEdit.addEventListener("click", resetBookingForm);
-  }
+    const users = getUsers();
+    const user = users.find(u => u.email === email);
 
-  // Cancel appointment
-  window.cancelAppointment = function(index) {
-    if (confirm("Are you sure you want to cancel this appointment?")) {
-      userAppointments.splice(index, 1);
-      renderAppointments();
-      resetBookingForm();
+    if (!user) {
+      showStatus("No account found with this email. Please register first.", "error");
+      return;
     }
-  };
 
-  // Booking submit handler
-  if (bookingForm) {
-    bookingForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+    if (user.password !== password) {
+      showStatus("Incorrect password. Please try again.", "error");
+      return;
+    }
 
-      const service = document.getElementById("doctorType").value;
-      const date = document.getElementById("bookingDate").value;
-      const time = document.getElementById("bookingTime").value;
-      const editIndex = parseInt(editingIndexInput.value);
+    setCurrentUser(user);
+    showStatus(`Welcome back, ${user.firstName}!`, "success");
+    loginForm.reset();
+    updateDashboardGreeting();
+    showPage("booking");
+    renderAppointments();
+  });
 
-      if (editIndex >= 0) {
-        userAppointments[editIndex] = { service, date, time };
-      } else {
-        userAppointments.push({ service, date, time });
+  // --- LOGOUT LOGIC ---
+  document.getElementById("btnLogout")?.addEventListener("click", () => {
+    removeCurrentUser();
+    showStatus("You have been logged out.", "info");
+    showPage("welcome");
+  });
+
+  function updateDashboardGreeting() {
+    const currentUser = getCurrentUser();
+    const greetingElement = document.getElementById("welcomeUserGreeting");
+    if (currentUser && greetingElement) {
+      greetingElement.textContent = `Welcome, ${currentUser.firstName} ${currentUser.surname}`;
+    }
+  }
+
+  // --- SERVICE DIRECT BOOK BUTTONS ---
+  document.querySelectorAll(".btn-service-book").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const serviceName = this.getAttribute("data-service");
+      const currentUser = getCurrentUser();
+      
+      if (!currentUser) {
+        showStatus("Please log in or register to book a service.", "info");
+        showPage("login");
+        return;
       }
 
-      document.getElementById("summaryEmail").textContent = currentUser ? currentUser.name : "Patient";
+      showPage("booking");
+      renderAppointments();
+      const doctorSelect = document.getElementById("doctorType");
+      if (doctorSelect) {
+        doctorSelect.value = serviceName;
+      }
+    });
+  });
+
+  // --- BOOKING & APPOINTMENTS MANAGEMENT ---
+  const bookingForm = document.getElementById("bookingForm");
+  const editingIndexInput = document.getElementById("editingIndex");
+  const btnSubmitBooking = document.getElementById("btnSubmitBooking");
+  const btnCancelEdit = document.getElementById("btnCancelEdit");
+
+  bookingForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      showStatus("Session expired. Please log in again.", "error");
+      showPage("login");
+      return;
+    }
+
+    const service = document.getElementById("doctorType").value;
+    const date = document.getElementById("bookingDate").value;
+    const time = document.getElementById("bookingTime").value;
+    const editIdx = parseInt(editingIndexInput.value, 10);
+
+    let appointments = getAppointments();
+
+    if (editIdx >= 0) {
+      // Update existing booking
+      appointments[editIdx] = {
+        id: appointments[editIdx].id,
+        userEmail: currentUser.email,
+        patientName: currentUser.fullName,
+        service: service,
+        date: date,
+        time: time
+      };
+      saveAppointments(appointments);
+      showStatus("Appointment updated successfully!", "success");
+      resetBookingForm();
+      renderAppointments();
+    } else {
+      // Create new booking
+      const newBooking = {
+        id: Date.now(),
+        userEmail: currentUser.email,
+        patientName: currentUser.fullName,
+        service: service,
+        date: date,
+        time: time
+      };
+
+      appointments.push(newBooking);
+      saveAppointments(appointments);
+
+      // Populate confirmation page details
+      document.getElementById("summaryEmail").textContent = currentUser.fullName;
       document.getElementById("summaryDepartment").textContent = service;
       document.getElementById("summaryDate").textContent = date;
       document.getElementById("summaryTime").textContent = time;
 
-      renderAppointments();
       resetBookingForm();
-      goToPage(confirmationPage);
+      showPage("confirmation");
+    }
+  });
+
+  document.getElementById("btnGoToDashboard")?.addEventListener("click", () => {
+    showPage("booking");
+    renderAppointments();
+  });
+
+  btnCancelEdit?.addEventListener("click", () => {
+    resetBookingForm();
+  });
+
+  function resetBookingForm() {
+    bookingForm.reset();
+    editingIndexInput.value = "-1";
+    document.getElementById("formTitle").textContent = "Book an appointment";
+    btnSubmitBooking.textContent = "Confirm booking";
+    btnCancelEdit.classList.add("hidden");
+  }
+
+  function renderAppointments() {
+    const currentUser = getCurrentUser();
+    const container = document.getElementById("appointmentsListContainer");
+    if (!container || !currentUser) return;
+
+    const appointments = getAppointments();
+    // Filter appointments for the currently logged-in user
+    const userApps = appointments.filter(a => a.userEmail === currentUser.email);
+
+    if (userApps.length === 0) {
+      container.innerHTML = `
+        <div id="noAppointmentsMsg" class="empty-state-box">
+          No appointments booked yet. Use the form to reserve a slot.
+        </div>`;
+      return;
+    }
+
+    let html = '<div class="appointments-list">';
+    appointments.forEach((app, index) => {
+      if (app.userEmail === currentUser.email) {
+        html += `
+          <div class="appointment-item-card">
+            <div class="app-details">
+              <h4>${app.service}</h4>
+              <p>📅 ${app.date} at ⏰ ${app.time}</p>
+            </div>
+            <div class="app-actions">
+              <button type="button" class="btn-edit" onclick="editAppointment(${index})">Edit</button>
+              <button type="button" class="btn-delete" onclick="deleteAppointment(${index})">Cancel</button>
+            </div>
+          </div>
+        `;
+      }
     });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // Global scope helper for edit/delete buttons rendered in innerHTML
+  window.editAppointment = function(index) {
+    const appointments = getAppointments();
+    const app = appointments[index];
+    if (!app) return;
+
+    document.getElementById("doctorType").value = app.service;
+    document.getElementById("bookingDate").value = app.date;
+    document.getElementById("bookingTime").value = app.time;
+    editingIndexInput.value = index;
+
+    document.getElementById("formTitle").textContent = "Edit appointment";
+    btnSubmitBooking.textContent = "Update booking";
+    btnCancelEdit.classList.remove("hidden");
+  };
+
+  window.deleteAppointment = function(index) {
+    if (confirm("Are you sure you want to cancel this appointment?")) {
+      let appointments = getAppointments();
+      appointments.splice(index, 1);
+      saveAppointments(appointments);
+      showStatus("Appointment cancelled.", "info");
+      renderAppointments();
+    }
+  };
+
+  // --- NOTIFICATION TOAST ---
+  function showStatus(message, type = "info") {
+    const statusBox = document.getElementById("statusMessage");
+    if (!statusBox) return;
+
+    statusBox.textContent = message;
+    statusBox.className = `status-message status-${type} show`;
+
+    setTimeout(() => {
+      statusBox.classList.remove("show");
+    }, 4000);
+  }
+
+  // Check initial login state on page load
+  const existingUser = getCurrentUser();
+  if (existingUser) {
+    updateDashboardGreeting();
   }
 });

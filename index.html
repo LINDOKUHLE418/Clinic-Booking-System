@@ -22,16 +22,19 @@
       <button type="button" id="navLoginBtn" class="btn-top-right">Log In</button>
     </nav>
 
-    <!-- PAGE 1: WELCOME / HERO PAGE -->
-    <section id="welcomePage" class="page-view">
-      <div class="hero-grid">
+    <!-- PAGE 1: FULL WELCOME / HERO PAGE -->
+    <section id="welcomePage" class="page-view full-page-welcome">
+      
+      <!-- HERO BANNER -->
+      <div class="hero-grid animate-fade-in">
         <div class="hero-text">
-          <h1>Your Health, Our Priority.<br>Book An Appointment</h1>
-          <p>Choose from our trusted doctors and specialists, pick a convenient time, and get the care you need all with just a few clicks.</p>
+          <span class="pill-badge">Healthcare Built Around You</span>
+          <h1>Your Health, Our Priority.<br>Book An Appointment Today</h1>
+          <p>Choose from our trusted doctors and specialists, pick a convenient time, and receive compassionate care with just a few clicks.</p>
           
           <div class="hero-actions">
-            <button type="button" id="btnGoToLogin" class="btn-primary">Log In</button>
-            <button type="button" id="btnGoToRegister" class="btn-secondary">Register</button>
+            <button type="button" id="btnGoToLogin" class="btn-primary">Log In to Book</button>
+            <button type="button" id="btnGoToRegister" class="btn-secondary">Register Account</button>
           </div>
         </div>
 
@@ -41,6 +44,139 @@
           </div>
         </div>
       </div>
+
+      <!-- STATS SECTION -->
+      <div class="stats-banner animate-fade-in">
+        <div class="stat-item">
+          <h3>15k+</h3>
+          <p>Patients Served</p>
+        </div>
+        <div class="stat-item">
+          <h3>25+</h3>
+          <p>Medical Specialists</p>
+        </div>
+        <div class="stat-item">
+          <h3>99%</h3>
+          <p>Satisfaction Rate</p>
+        </div>
+        <div class="stat-item">
+          <h3>24/7</h3>
+          <p>Emergency Care</p>
+        </div>
+      </div>
+
+      <!-- WHY CHOOSE US -->
+      <div class="landing-section">
+        <div class="section-title">
+          <h2>Why Choose Ubuntu Health?</h2>
+          <p>We combine holistic care, modern medical practices, and fast appointment scheduling.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⏱️</div>
+            <h3>Zero Wait Times</h3>
+            <p>Skip crowded waiting rooms with clear time slots and streamlined digital check-ins.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🩺</div>
+            <h3>Expert Physicians</h3>
+            <p>Our multidisciplinary medical team brings decades of clinical excellence to your care.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Confidential & Safe</h3>
+            <p>Your clinical data and medical records are handled with strict privacy protocols.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEET OUR DOCTORS -->
+      <div class="landing-section">
+        <div class="section-title">
+          <h2>Meet Our Doctors</h2>
+          <p>Dedicated medical personnel ready to assist you and your family.</p>
+        </div>
+
+        <div class="doctors-grid">
+          <div class="doctor-card">
+            <div class="doctor-avatar">👨‍⚕️</div>
+            <h3>Dr. Thabo Mokoena</h3>
+            <span class="doctor-spec">Senior General Practitioner</span>
+            <p>Specializes in preventative care and chronic disease management with 12+ years of experience.</p>
+          </div>
+          <div class="doctor-card">
+            <div class="doctor-avatar">👩‍⚕️</div>
+            <h3>Dr. Sarah Jenkins</h3>
+            <span class="doctor-spec">Maternal & Child Health</span>
+            <p>Passionate about antenatal care, child immunisations, and holistic family wellness.</p>
+          </div>
+          <div class="doctor-card">
+            <div class="doctor-avatar">🧠</div>
+            <h3>Dr. Amara Okeke</h3>
+            <span class="doctor-spec">Clinical Psychologist</span>
+            <p>Dedicated to supporting mental wellness, anxiety therapy, and stress management counselling.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div class="landing-section">
+        <div class="section-title">
+          <h2>What Our Patients Say</h2>
+          <p>Real experiences from community members who trust Ubuntu Health Clinic.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="quote">"Booking my chronic prescription pickup took under 2 minutes. The staff was incredibly welcoming when I arrived!"</p>
+            <div class="patient-info">
+              <strong>— Nomvula Z.</strong>
+              <span>General Checkup Patient</span>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="quote">"The mental health support services here changed my life. Easy online booking made taking the first step stress-free."</p>
+            <div class="patient-info">
+              <strong>— David K.</strong>
+              <span>Mental Health Patient</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALL TO ACTION BANNER -->
+      <div class="cta-banner">
+        <h2>Ready to prioritize your wellbeing?</h2>
+        <p>Create an account now to choose your preferred service, date, and practitioner in minutes.</p>
+        <button type="button" class="btn-primary btn-cta-register">Get Started Now</button>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="clinic-footer">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <div class="brand-logo">Ubuntu <span>Health</span></div>
+            <p>Humanity through healing and excellence in community healthcare.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <p>Home</p>
+            <p>Services</p>
+            <p>About Us</p>
+          </div>
+          <div class="footer-col">
+            <h4>Clinic Hours</h4>
+            <p>Mon - Fri: 08:00 - 17:00</p>
+            <p>Saturday: 08:00 - 13:00</p>
+            <p>Sunday: Closed</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Ubuntu Health Clinic. All rights reserved.</p>
+        </div>
+      </footer>
+
     </section>
 
     <!-- PAGE 2: SERVICES PAGE -->
@@ -52,7 +188,6 @@
         </header>
         
         <div class="services-grid">
-          <!-- Service 1 -->
           <div class="service-card">
             <div class="service-code">GP-01</div>
             <h3>General Consultation</h3>
@@ -61,7 +196,6 @@
             <button type="button" class="btn-service-book" data-service="General Consultation (GP-01)">Book this service</button>
           </div>
 
-          <!-- Service 2 -->
           <div class="service-card">
             <div class="service-code">CH-02</div>
             <h3>Chronic Medication</h3>
@@ -70,7 +204,6 @@
             <button type="button" class="btn-service-book" data-service="Chronic Medication (CH-02)">Book this service</button>
           </div>
 
-          <!-- Service 3 -->
           <div class="service-card">
             <div class="service-code">IM-03</div>
             <h3>Immunisations</h3>
@@ -79,7 +212,6 @@
             <button type="button" class="btn-service-book" data-service="Immunisations (IM-03)">Book this service</button>
           </div>
 
-          <!-- Service 4 -->
           <div class="service-card">
             <div class="service-code">MC-04</div>
             <h3>Maternal & Child Health</h3>
@@ -88,7 +220,6 @@
             <button type="button" class="btn-service-book" data-service="Maternal & Child Health (MC-04)">Book this service</button>
           </div>
 
-          <!-- Service 5 -->
           <div class="service-card">
             <div class="service-code">HT-05</div>
             <h3>HIV/TB Screening</h3>
@@ -97,7 +228,6 @@
             <button type="button" class="btn-service-book" data-service="HIV/TB Screening (HT-05)">Book this service</button>
           </div>
 
-          <!-- Service 6 -->
           <div class="service-card">
             <div class="service-code">MH-06</div>
             <h3>Mental Health Support</h3>
@@ -106,7 +236,6 @@
             <button type="button" class="btn-service-book" data-service="Mental Health Support (MH-06)">Book this service</button>
           </div>
 
-          <!-- Service 7 -->
           <div class="service-card">
             <div class="service-code">MP-07</div>
             <h3>Minor Procedures</h3>
@@ -115,7 +244,6 @@
             <button type="button" class="btn-service-book" data-service="Minor Procedures (MP-07)">Book this service</button>
           </div>
 
-          <!-- Service 8 -->
           <div class="service-card">
             <div class="service-code">FP-08</div>
             <h3>Family Planning</h3>
@@ -146,7 +274,6 @@
       </div>
     </section>
 
-    <!-- PAGE 4: REGISTER PAGE -->
     <!-- PAGE 4: REGISTER PAGE -->
     <section id="registerPage" class="page-view hidden">
       <div class="form-container">
@@ -203,29 +330,6 @@
       </div>
     </section>
 
-    <!-- PAGE 5: LOGIN PAGE -->
-    <section id="loginPage" class="page-view hidden">
-      <div class="form-container">
-        <header class="form-header">
-          <h2>Patient Log In</h2>
-          <p>Sign in to your account to schedule your appointment.</p>
-        </header>
-
-        <form id="loginForm" class="form-section">
-          <div class="form-group">
-            <label for="loginEmail">Email Address</label>
-            <input type="email" id="loginEmail" placeholder="name@example.com" required>
-          </div>
-          <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" placeholder="Enter your password" required>
-          </div>
-          <button type="submit" class="btn-primary">Log In</button>
-          <button type="button" id="btnBackFromLogin" class="btn-link">← Back to Home Page</button>
-        </form>
-      </div>
-    </section>
-
     <!-- PAGE 6: BOOKING & APPOINTMENTS DASHBOARD -->
     <section id="bookingPage" class="page-view hidden">
       <div class="content-container wide-container">
@@ -235,7 +339,6 @@
         </header>
 
         <div class="dashboard-grid">
-          <!-- LEFT: BOOKING / EDIT FORM -->
           <div class="booking-card">
             <h3 id="formTitle">Book an appointment</h3>
             <form id="bookingForm" class="form-section">
@@ -273,7 +376,6 @@
             </form>
           </div>
 
-          <!-- RIGHT: MY APPOINTMENTS SECTION -->
           <div class="appointments-card">
             <h3>My appointments</h3>
             <div id="appointmentsListContainer">

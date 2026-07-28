@@ -70,6 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnGoToLogin) btnGoToLogin.addEventListener("click", () => goToPage(loginPage));
   if (navLoginBtn) navLoginBtn.addEventListener("click", () => goToPage(loginPage));
   if (btnGoToRegister) btnGoToRegister.addEventListener("click", () => goToPage(registerPage));
+  
+  // Target CTA Register button on the new welcome banner
+  const btnCtaRegister = document.querySelector(".btn-cta-register");
+  if (btnCtaRegister) {
+    btnCtaRegister.addEventListener("click", () => goToPage(registerPage));
+  }
+
   if (btnBackFromReg) btnBackFromReg.addEventListener("click", () => goToPage(welcomePage));
   if (btnBackFromLogin) btnBackFromLogin.addEventListener("click", () => goToPage(welcomePage));
   
